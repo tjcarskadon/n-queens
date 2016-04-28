@@ -30,46 +30,6 @@ window.findNRooksSolution = function(n) {
 
     }
   }
-
-
-  // n = 2;
-  // var storage = [];
-
-
-/*
-
-  make a recursive function that places a rook in a square and checks if there is a violatoin.
-  once it generates a successful version call the function again and check the first position.  
-  if it is 1 then go thru the table and toggle all cell to the opposite state
-
-*/
-
-  // //make the recursive function
-  // var fn = function (board, rowNum) {
-  //   board = board || new Board({n: n});
-  //   if (rowNum === n) {
-  //     return;
-  //   }
-  //   //iterate over the board
-  //   for (var i = 0; i < n; i++) {
-  //     board.togglePiece(rowNum, i);
-  //     if (board.hasAnyRooksConflicts()) {
-  //         board.togglePiece(rowNum, i);
-  //     } 
-  //     fn(board, rowNum + 1);
-  //   }
-  //   //need to figure out how to deep copy this.
-  //   // storage.push(board.rows().slice());
-
-  //   for (var i = 0; i < board.rows().length; i++) {
-  //     storage.concat(board.rows()[i]);
-  //   }
-
-
-  // };
-  // fn(b, 0);
-  // return storage;
-
   return b.rows();
 };
 
@@ -103,7 +63,6 @@ window.countNRooksSolutions = function(n) {
         if (!rooks) {
           solutionCount++;
           board.togglePiece(index, i);
-          //rooks++;
           return;
         } else {
           traverse(board, index + 1, rooks);   
@@ -121,9 +80,62 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  
+//*******************SOLUTION BAED ON MAKING ALL AND THEN RETURNING THE LAST ONE***********************
+
+  var solution = []; //fixme
+  var b = new Board({n: n});
+
+  var traverse = function (board, index, queens) {
+
+
+    if (!board.rows().length) {
+      return [];
+    }
+
+    for (var i = 0; i <= n; i++ ) {
+      if (solution.length > 0) {
+        return;
+      }
+      if (i === n) {
+        var row = board.get(index);
+        var tempIndex = row.indexOf(1);
+        if (tempIndex !== -1) {
+          board.togglePiece(index, tempIndex);
+          queens++; 
+        }
+        return;
+      }
+      if (index + 1 === n - queens) {
+        var row = board.get(index);
+        board.togglePiece(index, row.indexOf(1));
+        queens++;
+      }
+      board.togglePiece(index, i);
+      queens--;
+      if (board.hasAnyQueensConflicts()) {
+        board.togglePiece(index, i);
+        queens++;
+      } else {
+        if (!queens) {
+          solution = b.rows();
+         
+          return;
+        } else {
+          traverse(board, index + 1, queens);   
+        }
+      }
+    }
+  };
+
+  traverse(b, 0, n);
+
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+
+  if (!solution.length) {
+    return b.rows();
+  }
   return solution;
 };
 
