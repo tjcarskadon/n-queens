@@ -16,10 +16,61 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution; //fixme
+  var b = new Board({n: n});
+  var rows = b.rows();
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  //MVP
+  for (var i = 0; i < rows.length; i++) {
+    for (var j = 0; j < rows.length; j++) {
+      b.togglePiece(i, j);
+      if (b.hasAnyRooksConflicts()) {
+        b.togglePiece(i, j);
+      }
+
+    }
+  }
+
+
+  // n = 2;
+  // var storage = [];
+
+
+/*
+
+  make a recursive function that places a rook in a square and checks if there is a violatoin.
+  once it generates a successful version call the function again and check the first position.  
+  if it is 1 then go thru the table and toggle all cell to the opposite state
+
+*/
+
+  // //make the recursive function
+  // var fn = function (board, rowNum) {
+  //   board = board || new Board({n: n});
+  //   if (rowNum === n) {
+  //     return;
+  //   }
+  //   //iterate over the board
+  //   for (var i = 0; i < n; i++) {
+  //     board.togglePiece(rowNum, i);
+  //     if (board.hasAnyRooksConflicts()) {
+  //         board.togglePiece(rowNum, i);
+  //     } 
+  //     fn(board, rowNum + 1);
+  //   }
+  //   //need to figure out how to deep copy this.
+  //   // storage.push(board.rows().slice());
+
+  //   for (var i = 0; i < board.rows().length; i++) {
+  //     storage.concat(board.rows()[i]);
+  //   }
+
+
+  // };
+  // fn(b, 0);
+  // return storage;
+
+  return b.rows();
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
