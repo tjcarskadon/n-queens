@@ -174,7 +174,6 @@ window.countNQueensSolutions = function(n) {
         queens++;
       } else {
         if (!queens) {
-          debugger;
           solutionCount++;
           board.togglePiece(index, i);
           return;
