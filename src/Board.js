@@ -191,7 +191,24 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var rows = this.rows();
+      var board = this;
+      for (var i = 0; i < rows.length; i++ ) { //row number
+        for (var j = rows.length - 1; j >= 0; j--) { // index number
+          var index = j;
+          var cnt = 0;
+          for (var k = i; k < rows.length; k++) { // row + subsequent rows
+            if (rows[k][index]) {
+              cnt ++;
+            }
+            index --;
+          }
+          if (cnt > 1) {
+            return true;
+          }
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
